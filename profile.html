@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>讓 C# 也能很 Social 用戶資料</title>
-    <!-- jquery CDN incluer -->
+    <!-- jquery CDN include -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <!-- CSS include -->
@@ -22,7 +22,7 @@
         let baseLoginApiUrl = 'https://localhost:8080/api/LineLogin/';
         // 頁面載入時，就是登入後 Line 透過 callback 帶回資料
         // 此時開始取得使用者資料
-        window.onload = function () {
+        window.onload = () => {
             const params = new Proxy(new URLSearchParams(window.location.search), {
                 get: (searchParams, prop) => searchParams.get(prop),
             });
@@ -82,7 +82,7 @@
             <a> -------- ID TOKEN -------- </a>
             <a><img id="idToken_user_avatar" src=""></image></a>
             <a>name : <b id="idToken_user_name"></b></a>
-            <a>emial : <b id="idToken_user_email"></b></a>
+            <a>email : <b id="idToken_user_email"></b></a>
             <a>iss(token 簽發者) : <b id="iss"></b></a>
             <a>sub(使用者 ID) : <b id="sub"></b></a>
             <a>aud(Channel ID) : <b id="aud"></b></a>
