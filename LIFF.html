@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFF - 讓 C# 也能很 Social 用戶資料</title>
+    <title>LIFF - Newtype</title>
     <!-- LIFF SDK CDN include -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <!-- jquery CDN include -->
@@ -19,107 +19,9 @@
 <body>
     <div class="topnav">
     </div>
-    <script>
-        window.onload = function () {
-            const defaultLiffId = '1657502969-VElo7El1';
-            $(document).ready(function () {
-                liffInit(defaultLiffId);
-            });
-        }
-        function liffInit(liffId) {
-            // withLoginOnExternalBrowser : true 時代表 auto login 啟動，LIFF 初始化後會自動呼叫 liff.login 登入。
-            liff.init({ liffId: liffId, withLoginOnExternalBrowser: true }).then(() => {
-                $("#os").text(liff.getOS());
-                $("#language").text(liff.getLanguage());
-                $("#version").text(liff.getVersion());
-                $("#lineVersion").text(liff.getLineVersion());
-                $("#isInClient").text(liff.isInClient());
-
-                // 取得一般的 user profile
-                liff.getProfile().then(function (profile) {
-                    console.log(profile);
-                    $("#user_avatar").attr("src", profile.pictureUrl);
-                    $("#user_name").text('姓名 : ' + profile.displayName);
-                    $("#user_id").text('使用者ID : ' + profile.userId);
-                    $("#user_status").text('狀態文字 : ' + profile.statusMessage);
-                });
-
-                // 取得包在 id token 內的 user profile
-                const idTokenProfile = liff.getDecodedIDToken()
-                console.log(idTokenProfile);
-                $("#idToken_user_avatar").attr("src", idTokenProfile.picture);
-                $("#idToken_user_name").text(idTokenProfile.name);
-                $("#idToken_user_email").text(idTokenProfile.email);
-                $("#iss").text(idTokenProfile.iss);
-                $("#sub").text(idTokenProfile.sub);
-                $("#aud").text(idTokenProfile.aud);
-                $("#exp").text(idTokenProfile.exp);
-                $("#iat").text(idTokenProfile.iat);
-                $("#amr").text(idTokenProfile.amr);
-            }).catch((err) => {
-                console.log(err.code, err.message);
-            })
-        }
-
-        function openQRCodeReader() {
-            liff
-                .scanCodeV2()
-                .then((result) => {
-                    $("#qrcode_string").text(result.value);
-                })
-                .catch((error) => {
-                    $("#qrcode_string").text(error);
-                    console.log("error", error);
-                });
-        }
-
-        function sendMessage() {
-            message = JSON.parse(`{
-                "type" : "text",
-                "text" : "LIFF 傳送訊息"
-            }`)
-            liff
-                .sendMessages([
-                    message
-                ])
-                .then(() => {
-                    console.log("message sent");
-                })
-                .catch((err) => {
-                    $("#qrcode_string").text(error);
-                    console.log("error", err);
-                });
-        }
-
-        function shareTargetPicker() {
-            if (!liff.isApiAvailable('shareTargetPicker')) {
-                console.log("請檢查 Line 版本是否為 10.3.0 以上")
-                return;
-            }
-            message = JSON.parse(`{
-                "type" : "text",
-                "text" : "LIFF ShareTargetPicker 分享訊息"
-            }`)
-            liff.shareTargetPicker([message], { isMultiple: true, });
-        }
-
-    </script>
+    <script src="/LIFF.js"></script>
     <center>
 
-        <!-- QR Code 按鈕 -->
-        <div class="container">
-            <button onclick="openQRCodeReader()">開啟 QR Code 掃瞄器</button>
-            <a id="qrcode_string">QR Code Text</a>
-        </div>
-
-        <!-- SendMessage 按鈕 -->
-        <div class="container">
-            <button onclick="sendMessage()">傳送訊息</button>
-        </div>
-        <!-- ShareTargetPicker 按鈕 -->
-        <div class="container">
-            <button onclick="shareTargetPicker()">分享訊息</button>
-        </div>
         <div class="container">
             <a> -------- 環境 -------- </a>
             <a>OS : <b id="os"></b></a>
